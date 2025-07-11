@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Professional Todo Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed'
+                        },
+                        success: {
+                            500: '#10b981',
+                            600: '#059669'
+                        },
+                        danger: {
+                            500: '#ef4444',
+                            600: '#dc2626'
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui']
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'strong': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-gradient { 
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
+        }
+        .animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
+        .animate-fade-in { animation: fade-in 0.6s ease-out; }
+        .animate-slide-up { animation: slide-up 0.6s ease-out; }
+        .animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
+        
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen font-sans relative overflow-x-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+    <div class="absolute top-40 right-10 w-72 h-72 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse animation-delay-2000"></div>
+    <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-72 h-72 bg-gradient-to-r from-cyan-200 to-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse animation-delay-4000"></div>
+    
+    <div class="relative z-10 container mx-auto px-4 py-12 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full mb-6 shadow-lg animate-bounce-gentle">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-6xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-gradient">TaskFlow</h1>
+            <p class="text-xl text-gray-600 font-medium animate-slide-up">Professional task management made simple</p>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-500 via-accent-500 to-purple-500 mx-auto mt-6 rounded-full animate-pulse"></div>
+        </header>
+
+        <!-- Add Todo Form -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 p-8 mb-8 animate-slide-up animation-delay-200 hover:shadow-medium transition-all duration-300">
+            <form class="flex flex-col lg:flex-row gap-4" method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="flex-1 relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-300 group-focus-within:text-primary-500">
+                        <svg class="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        name="task_name"
+                        placeholder="What would you like to accomplish today? ✨" 
+                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-300 text-gray-700 font-medium placeholder-gray-400 bg-white/50 hover:bg-white/70"
+                        id="todoInput"
+                        required
+                    >
+                </div>
+                <button 
+                    type="submit" 
+                    class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-medium focus:outline-none focus:ring-4 focus:ring-primary-200 animate-pulse-subtle"
+                >
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Task
+                    </span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex justify-center mb-8 animate-slide-up animation-delay-400">
+            <div class="bg-white/70 backdrop-blur-sm rounded-xl p-2 shadow-soft border border-white/20">
+                <div class="flex gap-2">
+                    <button class="filter-btn active px-6 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none" data-filter="all">
+                        <i class="fas fa-list mr-2"></i>All Tasks
+                    </button>
+                    <button class="filter-btn px-6 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none" data-filter="active">
+                        <i class="fas fa-clock mr-2"></i>Active
+                    </button>
+                    <button class="filter-btn px-6 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none" data-filter="completed">
+                        <i class="fas fa-check-circle mr-2"></i>Completed
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Todo List -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-8">
+            <!-- Active Tasks -->
+            <div class="space-y-4 animate-slide-up animation-delay-600" id="activeTasks">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clock text-white text-sm"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Active Tasks</h2>
+                    <span class="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm font-medium">{{ active_tasks.count }}</span>
+                </div>
+                
+                <div class="space-y-3">
+                    {% for task in active_tasks %}
+                    <div class="task-item bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-soft border border-white/20 transition-all duration-300 hover:shadow-medium group">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <div class="w-6 h-6 border-2 border-gray-300 rounded-lg cursor-pointer transition-all duration-300 hover:border-success-500 flex items-center justify-center relative">
+                                    <i class="fas fa-circle text-primary-400 text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors duration-300 text-lg">{{ task.task_name }}</h3>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                    Created {{ task.created_at|date:"M d, Y \a\t g:i A" }}
+                                </p>
+                                {% if task.updated_at != task.created_at %}
+                                <p class="text-xs text-gray-400 mt-1">
+                                    <i class="fas fa-edit mr-1"></i>
+                                    Updated {{ task.updated_at|date:"M d, Y \a\t g:i A" }}
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <a href="{% url 'complete_task' task.id %}" class="w-10 h-10 bg-success-500 hover:bg-success-600 text-white rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-success-200 flex items-center justify-center" title="Mark as complete">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                                <a href="{% url 'delete_task' task.id %}" class="w-10 h-10 bg-danger-500 hover:bg-danger-600 text-white rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-danger-200 flex items-center justify-center" title="Delete task" onclick="return confirm('Are you sure you want to delete this task?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-12">
+                        <div class="w-24 h-24 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-clipboard-list text-3xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No active tasks</h3>
+                        <p class="text-gray-500">Add a new task to get started! 🚀</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="space-y-4 animate-slide-up animation-delay-600" id="completedTasks">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-gradient-to-r from-success-500 to-success-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check text-white text-sm"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Completed Tasks</h2>
+                    <span class="bg-success-100 text-success-800 px-3 py-1 rounded-full text-sm font-medium">{{ completed_tasks.count }}</span>
+                </div>
+                
+                <div class="space-y-3">
+                    {% for task in completed_tasks %}
+                    <div class="task-item bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-soft border border-white/20 transition-all duration-300 hover:shadow-medium group opacity-75">
+                        <div class="flex items-center gap-4">
+                            <div class="w-6 h-6 bg-success-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-600 line-through text-lg">{{ task.task_name }}</h3>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    <i class="fas fa-calendar-plus mr-1"></i>
+                                    Created {{ task.created_at|date:"M d, Y" }}
+                                </p>
+                                <p class="text-sm text-success-600 mt-1">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Completed {{ task.updated_at|date:"M d, Y \a\t g:i A" }}
+                                </p>
+                            </div>
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <a href="{% url 'reactivate_task' task.id %}" class="w-10 h-10 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary-200 flex items-center justify-center" title="Mark as active">
+                                    <i class="fas fa-undo"></i>
+                                </a>
+                                <a href="{% url 'delete_task' task.id %}" class="w-10 h-10 bg-danger-500 hover:bg-danger-600 text-white rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-danger-200 flex items-center justify-center" title="Delete task" onclick="return confirm('Are you sure you want to delete this task?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-12">
+                        <div class="w-24 h-24 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-trophy text-3xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No completed tasks</h3>
+                        <p class="text-gray-500">Complete some tasks to see them here! 🎉</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid md:grid-cols-3 gap-6 animate-slide-up animation-delay-600">
+            <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-medium hover:shadow-strong transition-all duration-300 transform hover:scale-105">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-primary-100 text-sm font-medium uppercase tracking-wide">Total Tasks</p>
+                        <p class="text-3xl font-bold mt-2">{{ active_tasks.count|add:completed_tasks.count }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tasks text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-success-500 to-success-600 rounded-2xl p-6 text-white shadow-medium hover:shadow-strong transition-all duration-300 transform hover:scale-105">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-success-100 text-sm font-medium uppercase tracking-wide">Completed</p>
+                        <p class="text-3xl font-bold mt-2">{{ completed_tasks.count }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl p-6 text-white shadow-medium hover:shadow-strong transition-all duration-300 transform hover:scale-105">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 text-sm font-medium uppercase tracking-wide">Productivity</p>
+                        <p class="text-3xl font-bold mt-2">
+                            {% if active_tasks.count|add:completed_tasks.count > 0 %}
+                                {% widthratio completed_tasks.count active_tasks.count|add:completed_tasks.count 100 %}%
+                            {% else %}
+                                0%
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 animate-fade-in">
+            <p class="text-gray-500 font-medium">
+                Built with <i class="fas fa-heart text-red-500 animate-pulse"></i> using Django & Tailwind CSS
+            </p>
+            <p class="text-sm text-gray-400 mt-2">
+                Displaying live data from your TODOAPP database 📊
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const activeTasks = document.getElementById('activeTasks');
+        const completedTasks = document.getElementById('completedTasks');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-primary-500', 'text-white');
+                    btn.classList.add('text-gray-600', 'hover:text-primary-600', 'hover:bg-primary-50');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active', 'bg-primary-500', 'text-white');
+                button.classList.remove('text-gray-600', 'hover:text-primary-600', 'hover:bg-primary-50');
+
+                const filter = button.dataset.filter;
+                
+                // Show/hide sections based on filter
+                if (filter === 'all') {
+                    activeTasks.style.display = 'block';
+                    completedTasks.style.display = 'block';
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.remove('lg:grid-cols-1');
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.add('lg:grid-cols-2');
+                } else if (filter === 'active') {
+                    activeTasks.style.display = 'block';
+                    completedTasks.style.display = 'none';
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.add('lg:grid-cols-1');
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.remove('lg:grid-cols-2');
+                } else if (filter === 'completed') {
+                    activeTasks.style.display = 'none';
+                    completedTasks.style.display = 'block';
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.add('lg:grid-cols-1');
+                    document.querySelector('.grid.lg\\:grid-cols-2').classList.remove('lg:grid-cols-2');
+                }
+            });
+        });
+
+        // Initialize filter buttons
+        filterButtons[0].classList.add('bg-primary-500', 'text-white');
+        filterButtons.forEach((btn, index) => {
+            if (index !== 0) {
+                btn.classList.add('text-gray-600', 'hover:text-primary-600', 'hover:bg-primary-50');
+            }
+        });
+
+        // Enhance form submission with loading state
+        const form = document.querySelector('form');
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', function() {
+            submitButton.innerHTML = `
+                <span class="flex items-center gap-2">
+                    <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Adding Task...
+                </span>
+            `;
+            submitButton.disabled = true;
+        });
+    </script>
+</body>
+</html>
