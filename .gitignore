@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+env/
+venv/
+ENV/
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+media
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# macOS
+.DS_Store
+
+# Windows pagefile
+pagefile.sys
+
+# memory dumps
+*.mem
+memdump.mem
+
+# coverage
+.coverage
+htmlcov/
+
+# deployment
+*.wsgi
+*.cfg
+
+# pip
+pip-log.txt
+
+# Ignore environment files
+*.env
+
+# Ignore test reports
+reports/
